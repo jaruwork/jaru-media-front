@@ -5,32 +5,17 @@ import {
     AddPath,
     RemovePath
 } from '@layouts/Workspace/styles';
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import gravatar from 'gravatar';
 import CreatePathModal from '@components/CreatePathModal';
 import RemovePathModal from '@components/RemovePathModal';
 
-/**
- * 임시 테스트 데이터
- */
-const SideItems = [
-    {
-        name: "item1"
-    },
-    {
-        name: "item2"
-    },
-    {
-        name: "item3"
-    },
-    {
-        name: "item4"
-    }
-];
-
 const Workspace = () => {
     const [showCreatePathModal, setShowCreatePathModal] = useState(false);
     const [showRemovePathModal, setShowRemovePathModal] = useState(false);
+
+    const directory = useSelector((state) => state.directory);
 
     const onCloseModal = useCallback(() => {
         setShowCreatePathModal(false);
@@ -47,10 +32,9 @@ const Workspace = () => {
         setShowRemovePathModal((prev) => !prev);
     }, []);
 
-    const SidebarConsole = useCallback(() => {
-        console.log('item button clicked');
-    }, [])
-
+    const sideMenuDirectoryClicked = useCallback(() => {
+    }, []);
+    
     return (
         <>
             <SidebarParent>
@@ -59,9 +43,9 @@ const Workspace = () => {
                     <h2>nickname</h2>
                 </SideHeader>
                 {
-                    SideItems.map(item => (
-                        <SidebarPaths key={item.name} onClick={SidebarConsole}>
-                            <span>{item.name}</span>
+                    directory.rootFiles.map(item => (
+                        <SidebarPaths key={item} onClick={sideMenuDirectoryClicked}>
+                            <span>{item}</span>
                             <RemovePath className="fa fa-minus" onClick={toggleRemovePathModal}></RemovePath>
                         </SidebarPaths>
                     ))
